@@ -86,31 +86,31 @@ class GuiProgress extends JFrame {
     }
 }
 
-static <T> Tqdm<T> tqdm(List<T> a) {
+public static <T> Tqdm<T> tqdm(List<T> a) {
     return new Tqdm<>(a.iterator(), a.size(), "", DEFAULT_NCOLS, false);
 }
 
-static Tqdm<Object> tqdm(int total, String desc) {
+public static Tqdm<Object> tqdm(int total, String desc) {
     return new Tqdm<>(null, total, desc, DEFAULT_NCOLS, false);
 }
 
-static Tqdm<Object> tqdm(int total, String desc, boolean gui) {
+public static Tqdm<Object> tqdm(int total, String desc, boolean gui) {
     return new Tqdm<>(null, total, desc, DEFAULT_NCOLS, gui);
 }
 
-static <T> Tqdm<T> tqdm(Iterator<T> a, int total, String desc) {
+public static <T> Tqdm<T> tqdm(Iterator<T> a, int total, String desc) {
     return new Tqdm<>(a, total, desc, DEFAULT_NCOLS, false);
 }
 
-static <T> Tqdm<T> tqdm(List<T> a, String desc) {
+public static <T> Tqdm<T> tqdm(List<T> a, String desc) {
     return new Tqdm<>(a.iterator(), a.size(), desc, DEFAULT_NCOLS, false);
 }
 
-static <T> Tqdm<T> tqdm(List<T> a, boolean gui) {
+public static <T> Tqdm<T> tqdm(List<T> a, boolean gui) {
     return new Tqdm<>(a.iterator(), a.size(), "", DEFAULT_NCOLS, gui);
 }
 
-static <T> Tqdm<T> tqdm(List<T> a, int width) {
+public static <T> Tqdm<T> tqdm(List<T> a, int width) {
     return new Tqdm<>(a.iterator(), a.size(), "", DEFAULT_NCOLS, false);
 }
 
