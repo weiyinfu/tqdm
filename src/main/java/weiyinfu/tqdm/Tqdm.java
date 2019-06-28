@@ -32,20 +32,6 @@ GuiProgress guiProgress;
 //Default
 final static int DEFAULT_NCOLS = 70;
 
-class Wrapper implements Iterator<T> {
-    @Override
-    public boolean hasNext() {
-        if (data == null) throw new RuntimeException("tqdm need set data");
-        return data.hasNext();
-    }
-
-    @Override
-    public T next() {
-        update(1);
-        return data.next();
-    }
-}
-
 class GuiProgress extends JFrame {
     JProgressBar progress;
     JLabel label;
@@ -57,7 +43,7 @@ class GuiProgress extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         progress = new JProgressBar();
         progress.setMaximum(total);
-        label = new JLabel(desc);
+        label = new JLabel();
         label.setBackground(Color.red);
         label.setHorizontalTextPosition(JLabel.CENTER);
         label.setFont(new Font("微软雅黑", Font.ITALIC, 25));
@@ -67,12 +53,6 @@ class GuiProgress extends JFrame {
         this.add(label, BorderLayout.SOUTH);
         this.setResizable(false);
         this.setVisible(true);
-    }
-
-    void setProgress(int value) {
-        this.progress.setValue(value);
-        long used = System.currentTimeMillis() - beginTime;
-        this.label.setText(String.format("%d%%   %d/%d  已用时间%s", value * 100 / this.progress.getMaximum(), value, this.progress.getMaximum(), formatTime(used)));
     }
 
     void complete() {
@@ -131,13 +111,34 @@ Tqdm(Iterator<T> a, int total, String desc, int ncols, boolean gui) {
 public void update(int delta) {
     progress += delta;
     if (System.currentTimeMillis() - lastPrintTime > printIntervalInMilli) {
+        String speedString = formatSpeed(progress, lastProgress, System.currentTimeMillis() - lastPrintTime);
+        double percent = 1.0 * progress / total * 100;
+        String percentString = String.format("%2d%%", (int) (percent));
+        long usedTime = System.currentTimeMillis() - beginTime;
+        long leftTime = (long) (usedTime * 1.0 / progress * (total - progress));
+        String timeString = String.format("[%s<%s,%s]", formatTime(usedTime), formatTime(leftTime), speedString);
         if (gui) {
-            this.guiProgress.setProgress(progress);
-            if (!data.hasNext()) {
+            this.guiProgress.progress.setValue(progress);
+            this.guiProgress.label.setText(String.format("%s %d/%d %s", percentString, progress, total, timeString));
+            if ((data != null && !data.hasNext()) || this.progress >= this.total) {
                 this.guiProgress.complete();
             }
         } else {
-            System.out.print(getConsoleString());
+            StringBuilder builder = new StringBuilder("\r");
+            if (desc != null) {
+                builder.append(desc).append(':');
+            }
+            //Percent String
+            builder.append(percentString);
+            //GuiProgress String
+            int charCount = Math.min(progress * ncols / total, chars.length);
+            Arrays.fill(chars, 0, charCount, unitChar);
+            Arrays.fill(chars, charCount, ncols, ' ');
+            builder.append('|').append(chars).append('|');
+            //GuiProgress Desc String
+            builder.append(String.format("%d/%d", progress, total));
+            builder.append(timeString);
+            System.out.print(builder.toString());
         }
         lastPrintTime = System.currentTimeMillis();
         lastProgress = progress;
@@ -146,30 +147,19 @@ public void update(int delta) {
 
 @Override
 public Iterator<T> iterator() {
-    return new Wrapper();
-}
+    return new Iterator<T>() {
+        @Override
+        public boolean hasNext() {
+            if (data == null) throw new RuntimeException("tqdm need set data");
+            return data.hasNext();
+        }
 
-String getConsoleString() {
-    StringBuilder builder = new StringBuilder("\r");
-    if (desc != null) {
-        builder.append(desc).append(':');
-    }
-    //Percent String
-    double percent = 1.0 * progress / total * 100;
-    String percentString = String.format("%2d%%", (int) (percent));
-    builder.append(percentString);
-    //GuiProgress String
-    int charCount = Math.min(progress * ncols / total, chars.length);
-    Arrays.fill(chars, 0, charCount, unitChar);
-    Arrays.fill(chars, charCount, ncols, ' ');
-    builder.append('|').append(chars).append('|');
-
-    //GuiProgress Desc String
-    builder.append(String.format("%d/%d", progress, total));
-    long usedTime = System.currentTimeMillis() - beginTime;
-    long leftTime = (long) (usedTime * 1.0 / progress * (total - progress));
-    builder.append(String.format("[%s<%s,%s]", formatTime(usedTime), formatTime(leftTime), formatSpeed(progress, lastProgress, System.currentTimeMillis() - lastPrintTime)));
-    return builder.toString();
+        @Override
+        public T next() {
+            update(1);
+            return data.next();
+        }
+    };
 }
 
 String formatTime(long duration) {
