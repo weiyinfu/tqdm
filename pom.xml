@@ -19,11 +19,6 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    <!--属性-->
-    <properties>
-        <sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/
-        </sonatypeOssDistMgmtSnapshotsUrl>
-    </properties>
     <!--代码repo-->
     <scm>
         <connection>scm:git:git@github.com:weiyinfu/tqdm.git</connection>
@@ -155,7 +150,7 @@
         <snapshotRepository>
             <id>sonatype-nexus-snapshots</id>
             <name>Sonatype Nexus Snapshots</name>
-            <url>${sonatypeOssDistMgmtSnapshotsUrl}</url>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </snapshotRepository>
         <repository>
             <id>sonatype-nexus-staging</id>
@@ -163,7 +158,4 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
-
 </project>
-
-<!--mvn deploy-->
