@@ -1,4 +1,4 @@
-package weiyinfu.tqdm;
+package cn.weiyinfu.tqdm;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;

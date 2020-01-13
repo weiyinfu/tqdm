@@ -1,6 +1,6 @@
-package weiyinfu.tqdm;
+package cn.weiyinfu.tqdm;
 
-import static weiyinfu.tqdm.Tqdm.tqdm;
+import static cn.weiyinfu.tqdm.Tqdm.tqdm;
 
 public class Demo4 {
 public static void main(String[] args) {
