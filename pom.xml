@@ -2,11 +2,66 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!--坐标系-->
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>cn.weiyinfu</groupId>
     <artifactId>tqdm</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
+    <!--名称和描述-->
+    <name>tqdm</name>
+    <url>https://github.com/weiyinfu/tqdm</url>
+    <description>Java Progress Bar in Console</description>
+    <!--许可证-->
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <!--属性-->
+    <properties>
+        <sonatypeOssDistMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots/
+        </sonatypeOssDistMgmtSnapshotsUrl>
+    </properties>
+    <!--代码repo-->
+    <scm>
+        <connection>scm:git:git@github.com:weiyinfu/tqdm.git</connection>
+        <developerConnection>scm:git:git@github.com:weiyinfu/tqdm.git</developerConnection>
+        <url>http://github.com/weiyinfu/tqdm</url>
+        <tag>tqdm</tag>
+    </scm>
+    <!--组织-->
+    <organization>
+        <name>weiyinfu</name>
+        <url>https://weiyinfu.cn</url>
+    </organization>
+    <!--开发者-->
+    <developers>
+        <developer>
+            <name>weiyinfu</name>
+            <email>wei.yinfu@qq.com</email>
+            <organization>https://weiyinfu.cn</organization>
+        </developer>
+    </developers>
+    <!--贡献者-->
+    <contributors>
+        <contributor>
+            <name>weiyinfu</name>
+            <url>weiyinfu.cn</url>
+            <email>wei.yinfu@qq.com</email>
+            <organizationUrl>https://weiyinfu.cn</organizationUrl>
+            <roles>
+                <role>manager</role>
+            </roles>
+            <timezone>beijing</timezone>
+        </contributor>
+    </contributors>
+    <!--issue-->
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/weiyinfu/tqdm/issues</url>
+    </issueManagement>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -17,6 +72,19 @@
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -34,7 +102,68 @@
                     <skipTests>true</skipTests>
                 </configuration>
             </plugin>
+            <!--生产源码文件插件-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--gpg加密插件-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>${sonatypeOssDistMgmtSnapshotsUrl}</url>
+        </snapshotRepository>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <name>Nexus Release Repository</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
 </project>
+
+<!--mvn deploy-->

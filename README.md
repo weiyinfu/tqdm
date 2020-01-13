@@ -2,7 +2,7 @@ Java的进度条：模仿Python的tqdm
 
 直接使用Tqdm类的静态方法tqdm迭代一个List：
 ```java
-package weiyinfu.tqdm;
+package cn.weiyinfu.tqdm;
 
 import java.util.List;
 
