@@ -26,11 +26,7 @@
         <url>http://github.com/weiyinfu/tqdm</url>
         <tag>tqdm</tag>
     </scm>
-    <!--组织-->
-    <organization>
-        <name>weiyinfu</name>
-        <url>https://weiyinfu.cn</url>
-    </organization>
+
     <!--开发者-->
     <developers>
         <developer>
@@ -39,6 +35,11 @@
             <organization>https://weiyinfu.cn</organization>
         </developer>
     </developers>
+    <!--组织-->
+    <organization>
+        <name>weiyinfu</name>
+        <url>https://weiyinfu.cn</url>
+    </organization>
     <!--贡献者-->
     <contributors>
         <contributor>
